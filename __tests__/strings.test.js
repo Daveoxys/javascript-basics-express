@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../src/app');
+const { sayHello } = require('../src/lib/strings');
 
 describe('/strings', () => {
   describe('GET /hello/{string}', () => {
@@ -14,8 +15,20 @@ describe('/strings', () => {
     });
   });
 
+  describe('GET /hello/{string}', () => {
+    it('returns "Hello, world!" when passed "world"', done => {
+      request(app)
+        .get('/strings/hello/world')
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.body).toEqual({ result: 'Hello, world!' });
+          done();
+        });
+    });
+  });
+
   describe('GET /upper/{string}', () => {
-    xit('returns the uppercased string', done => {
+    it('returns the uppercased string', done => {
       request(app)
         .get('/strings/upper/hello')
         .then(res => {
@@ -27,7 +40,7 @@ describe('/strings', () => {
   });
 
   describe('GET /lower/{string}', () => {
-    xit('returns the lowercased string', done => {
+    it('returns the lowercased string', done => {
       request(app)
         .get('/strings/lower/HELLO')
         .then(res => {
